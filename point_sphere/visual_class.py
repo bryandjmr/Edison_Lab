@@ -6,7 +6,8 @@ import os
 class visual:
     def __init__(self, bead_radius):
         self.r = bead_radius
-        os.chdir("../point_sphere/images")
+        self.original = os.getcwd()
+        self.images = os.chdir("../point_sphere/images")
         self.counter = 0
    
 
@@ -34,3 +35,4 @@ class visual:
     def create_video(self, frame_rate=0.5):
         os.system('convert -delay 15 ../images/simg_*.png -loop 1 movie.gif')
         [os.remove(file) for file in os.listdir('../images') if file.endswith('.png')]
+        os.chdir(self.original)
