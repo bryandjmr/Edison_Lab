@@ -84,26 +84,23 @@ class partition:
         prev_row = []
         for i in range(len(phi)): #loops through phi list
             if phi[i] != phi[-1]:
-                neighbors = [] #this list will be populated with current phi row that is be created to then find the neighers in the phi row (neighbors that are side by side)
-                theta_var, theta = self.create_theta(phi[i]) #helps solve for the interval that theta needs to be to have an area of self.area
+                theta_var, theta = self.create_theta(phi[i]) #helps solve for the interval that theta needs to be to be more than twice the size of a point
+                neighbors = np.empty(len(theta)-1, dtype=rectangle)#this list will be populated with current phi row that is be created to then find the neighers in the phi row (neighbors that are side by side)
                 for j in range(len(theta)):
                     if theta[j] != theta[-1]:
                         rect = rectangle([theta[j], theta[j+1]], [phi[i], phi[i+1]]) #creating the plane
+                        neighbors[j] = rect
                         if j != 0:
-                            rect.add_child(neighbors[-1])                                
+                            rect.add_child(neighbors[j-1])
                             if theta[j] == theta[-2]:
                                 rect.add_child(neighbors[0])
 
-                        if i != 0:
+                        if i != 0: 
                             if j == 0 or theta[j] == theta[-2]:
                                 rect.add_child([prev_row[0], prev_row[-1]])
-                                    
-                        neighbors.append(rect) #updates the neighbor list
-
-                    if len(prev_row) != 0: #adding the neighbors from the previous phi row
-                        for k in prev_row: #checks to see if the neighbors from above touch rect
-                            self.comparison(neighbors[-1], k, theta_var)              
-
+                            for k in prev_row: #checks to see if the neighbors from above touch rect
+                                self.comparison(neighbors[j], k, theta_var)
+                    
                 if i == 0: #adding the neighbors of the first phi row to the circle class above 
                     self.planes[0].add_child(neighbors)
                 self.planes.append(neighbors) #adding each row as a list to the self.planes function
@@ -117,26 +114,20 @@ class partition:
     def insert_p(self, point): #adds a point to the specific plane it corresponds to
         done = False
         overlap_counter = False
+        
         for i in self.planes:
-            if i == self.planes[0] or i == self.planes[-1]:
-                if i.inside(point):
-                    if i.overlap_f(point):
-                        point.p_plane = i
-                        i.p.append(point)
-                        done = True
-                        break
-                    else:
-                        overlap_counter = True
-            else:
+            if done == True or overlap_counter == True:
+                break
+            if type(i) == circle: #looking at circles
+                done,overlap_counter = i.inside(point) #gets truth values of if point has been inserted or point overlaps
+                if done == True or overlap_counter == True:
+                    break
+            else: #looking at rectangles
                 for rect in i:
-                    if rect.inside(point):
-                        if rect.overlap_f(point):
-                            point.p_plane = rect
-                            rect.p.append(point)
-                            done = True
-                            break
-                        else:
-                            overlap_counter = True
+                    done,overlap_counter = rect.inside(point)
+                    if (done == True) or (overlap_counter == True):
+                        break
+                
 
         if overlap_counter == True: #returns error message if a point overlaps
             print(point.p_s)

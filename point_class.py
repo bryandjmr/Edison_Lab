@@ -1,5 +1,4 @@
 import numpy as np
-from angle_class import angle
 
 class point_s: #this class defines a point on a sphere and the points attribute
     def __init__(self, position, velocity, r):

@@ -31,16 +31,16 @@ class sphere:
         if len(self.points) == 0: #determines that points have been added to sphere first
             print('ERROR: There are no points on the sphere', '\n')
         else:
-            cart_list= [0]*len(self.points) #creates empty array of the points' cartesian location
+            position_list= [0]*len(self.points) #creates empty array of the points' cartesian location
             video = visual(self.points[0].r) #creates data structure of video
             tracker = geodesic_distance(self.points[0].omega) #creates a data structure to graph distance between points
 
             #position_list = [0]*len(self.points)
             for i in range(len(self.points)): #finds initial location of the points
                 #position_list[i] = self.points[i].p_s
-                cart_list[i] = self.points[i].conversion()
+                position_list[i] = self.points[i].conversion()
 
-            video.add_images(cart_list) #creating an image in the video data strcture
+            video.add_images(position_list) #creating an image in the video data strcture
 
             tf = 0
             tracker.geodesic(self.points[0], self.points[1], tf)
@@ -48,7 +48,7 @@ class sphere:
             t_list = [0]*len(self.points)
             info_list = [0]*len(self.points)
             #prints out simulation data
-            print('Information:', 'Simulation has started','\n''Time:', tf,'\n','Position:','\n',np.array(cart_list),'\n')
+            print('Information:', 'Simulation has started','\n''Time:', tf,'\n','Position:','\n',np.array(position_list),'\n')
 
             while tf <= time: #while loop runs until the end of simulation
                 if tf == 0: #setting up the inital information of the points (critical time and critical events)
@@ -73,24 +73,24 @@ class sphere:
                     if type(corr_info) == list:
                         if self.points[i] == point_interest:
                             #position_list[i] = self.points[i].step_forward(dt, corr_info, dt)
-                            cart_list[i] = self.points[i].step_forward(dt, corr_info, dt)
+                            position_list[i] = self.points[i].step_forward(dt, corr_info, dt)
                         elif self.points[i] not in corr_info:
                             #position_list[i] = self.points[i].step_forward(t_list[i], info_list[i], dt)
-                            cart_list[i] = self.points[i].step_forward(t_list[i], corr_info, dt)
+                            position_list[i] = self.points[i].step_forward(t_list[i], corr_info, dt)
                         else:
                             #position_list[i] = self.points[i].step_forward(t_list[i], info_list[i], 0)
-                            cart_list[i] = self.points[i].step_forward(t_list[i], info_list[i], 0)
+                            position_list[i] = self.points[i].step_forward(t_list[i], info_list[i], 0)
                     else:
                         #position_list[i] = self.points[i].step_forward(t_list[i], info_list[i], dt)
-                        cart_list[i] = self.points[i].step_forward(t_list[i], info_list[i], dt)
+                        position_list[i] = self.points[i].step_forward(t_list[i], info_list[i], dt)
 
-                video.add_images(cart_list) #adds image of the current position to video
+                video.add_images(position_list) #adds image of the current position to video
 
                 tf += dt #updates time
                 tracker.geodesic(self.points[0], self.points[1], tf) #finds current distance between points
 
                 if dt != 0: #display location at nonzero time steps
-                    print('Time:',round(tf, 8),'\n''Position:','\n',np.array(cart_list),'\n')
+                    print('Time:',round(tf, 8),'\n''Position:','\n',np.array(position_list),'\n')
 
                 t_list = list(np.array(t_list) - dt) #updates t_list
                 #finds out what points are involved in critical event so that its critical times and events can be updated

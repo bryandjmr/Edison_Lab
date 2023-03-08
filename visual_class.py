@@ -7,7 +7,7 @@ class visual:
     def __init__(self, bead_radius):
         self.r = bead_radius
         self.original = os.getcwd()
-        self.images = os.chdir("../point_sphere/images")
+        os.chdir("/Users/bryan/Desktop/College/Research/Edison/point_sphere/images")
         self.counter = 0
    
 

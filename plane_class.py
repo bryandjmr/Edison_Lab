@@ -23,8 +23,14 @@ class plane:
             if point.p_s[0] <= self.theta[1]:
                 if point.p_s[1] >= self.phi[0]:
                     if point.p_s[1] <= self.phi[1]:
-                        return True
-            return False
+                        if self.overlap_f(point) == True:
+                            point.p_plane = self
+                            self.p.append(point)
+                            return [True, False]
+                        else:
+                            return False, True
+        
+        return False, False
         
     def overlap_f(self, point): #this function determines if there is an overlap with points in a plane or its neighbors
         if len(self.p) != 0: # testing overlap inside plane
@@ -42,7 +48,7 @@ class plane:
         return(True)
         
     def add_child(self, grid): #adds neighbors to the plane
-        if type(grid) == list: #if plane is a list of planes then add all of them as neighbors
+        if type(grid) == np.ndarray or type(grid) == list: #if plane is a list of planes then add all of them as neighbors
             for i in grid:
                 if i not in self.child:
                     self.child.append(i)
