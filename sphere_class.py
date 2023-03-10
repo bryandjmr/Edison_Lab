@@ -31,7 +31,7 @@ class sphere:
         if len(self.points) == 0: #determines that points have been added to sphere first
             print('ERROR: There are no points on the sphere', '\n')
         else:
-            position_list= [0]*len(self.points) #creates empty array of the points' cartesian location
+            position_list = [0]*len(self.points) #creates empty array of the points' cartesian location
             video = visual(self.points[0].r) #creates data structure of video
             tracker = geodesic_distance(self.points[0].omega) #creates a data structure to graph distance between points
 
