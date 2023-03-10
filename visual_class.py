@@ -34,5 +34,5 @@ class visual:
 
     def create_video(self, frame_rate=0.5):
         os.system('convert -delay 15 ../images/simg_*.png -loop 1 movie.gif')
-        [os.remove(file) for file in os.listdir('../images') if file.endswith('.png')]
+        #[os.remove(file) for file in os.listdir('../images') if file.endswith('.png')]
         os.chdir(self.original)

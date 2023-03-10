@@ -46,11 +46,19 @@ class point_s: #this class defines a point on a sphere and the points attribute
         #this determines if an intersection will even be possible
         angle = other.p_s - self.p_s 
         angle_velocity = self.v_s - other.v_s
-        t_1, t_2 = 0, 0
+
         if angle_velocity[0] != 0:
             t_1 = angle[0] / angle_velocity[0]
+        elif angle[0] == 0 and angle_velocity[0] == 0:
+            t_1 = 0
+        else:
+            t_1 = -1
         if angle_velocity[1] != 0:
             t_2 = angle[1] / angle_velocity[1]
+        elif angle[1] == 0 and angle_velocity[1] == 0:
+            t_2 = 0
+        else:
+            t_2 = -1
 
         if t_1 >= 0 and t_2 >= 0:
             tf= newt_raph_method(self, 0)

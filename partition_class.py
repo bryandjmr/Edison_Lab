@@ -79,8 +79,8 @@ class partition:
                 
         
     def tessellation(self): #divides the surface of the sphere into semi equal portions
-        self.planes.append(circle([0, np.pi*2], [0, self.omega], self.omega)) #make the area slightly smaller than self.area to ensure that only one point can exist inside
-        phi = np.linspace(self.omega, np.pi-self.omega, int((np.pi-2*self.omega)/(2*self.omega)))
+        self.planes.append(circle([0, np.pi*2], [0, 1.005*self.omega], 1.005*self.omega)) #make the area slightly smaller than self.area to ensure that only one point can exist inside
+        phi = np.linspace(self.omega, np.pi-self.omega, int((np.pi-2*self.omega)/(2.01*self.omega)))
         prev_row = []
         for i in range(len(phi)): #loops through phi list
             if phi[i] != phi[-1]:
@@ -107,7 +107,7 @@ class partition:
                 prev_row = neighbors #is a list that holds the planes of the previous row so that neighbors can be added
                 
             else:
-                self.planes.append(circle([0,np.pi*2], [np.pi-self.omega, np.pi], self.omega))
+                self.planes.append(circle([0,np.pi*2], [np.pi-1.005*self.omega, np.pi], 1.005*self.omega))
                 self.planes[-1].add_child(neighbors)
 
                           
